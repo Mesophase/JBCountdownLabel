@@ -71,10 +71,17 @@
     self.expirationDate = [NSDate dateWithTimeIntervalSinceNow:self.numSeconds];
 }
 
+- (void)startCountdown
+{
+    NSAssert(self.numSeconds > 0, @"You must provide a positive amount of time.");
+
+    [self restartCountdown];
+}
+
 - (void)restartCountdown
 {
     [self.timer invalidate];
-    
+
     self.expirationDate = [NSDate dateWithTimeIntervalSinceNow:self.numSeconds];
     self.text  = [NSString stringWithFormat:self.stringFormat, [self currentTimeString]];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateLabel) userInfo:nil repeats:YES];
