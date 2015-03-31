@@ -133,10 +133,10 @@
     NSString *timeRemaining;
     
     if ([countdown hour] > 0) {
-        timeRemaining = [NSString stringWithFormat:@"%02d:%02d:%02d",[countdown hour],[countdown minute], [countdown second]];
+        timeRemaining = [NSString stringWithFormat:@"%02ld:%02ld:%02ld",(long)[countdown hour],(long)[countdown minute], (long)[countdown second]];
     }
     else {
-        timeRemaining = [NSString stringWithFormat:@"%02d:%02d",[countdown minute], [countdown second]];
+        timeRemaining = [NSString stringWithFormat:@"%02ld:%02ld",(long)[countdown minute], (long)[countdown second]];
     }
     
     return timeRemaining;
