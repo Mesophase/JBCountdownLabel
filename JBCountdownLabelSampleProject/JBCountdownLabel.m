@@ -28,27 +28,34 @@
 
 @interface JBCountdownLabel()
 
-@property (nonatomic, weak) id<CountdownDelegate> delegate;
-@property (nonatomic, strong) NSString *stringFormat;
 @property (nonatomic, strong) NSDate *expirationDate;
 @property (nonatomic, strong) NSTimer *timer;
-@property (nonatomic, assign) int numSeconds;
 
 @end
 
 @implementation JBCountdownLabel
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self)
+    {
+        [self updateLabel];
+    }
+    return self;
+}
+
 - (instancetype)initWithFrame:(CGRect)frame format:(NSString *)string time:(int)seconds delegate:(id <CountdownDelegate>)delegate
 {
     NSAssert(seconds > 0, @"You must provide a positive amount of time.");
-    
+
     self = [super initWithFrame:frame];
     if (self)
     {
         self.numSeconds     = seconds;
         self.stringFormat   = string ?: @"%@";
         self.delegate       = delegate;
-        
+
         [self defaultLabel];
         [self restartCountdown];
         [self updateLabel];
@@ -94,22 +101,27 @@
 - (void)updateLabel
 {
     NSString *currentTime = [self currentTimeString];
-    self.text = [NSString stringWithFormat:self.stringFormat, currentTime];
-    
-    if ([[NSDate date] timeIntervalSinceDate:self.expirationDate] >= 0)
+    NSString *stringFormat = self.stringFormat ?: @"%@";
+    self.text = [NSString stringWithFormat:stringFormat, currentTime];
+
+    if (self.expirationDate)
     {
-        [self cancelCountdown];
-        if ([self.delegate respondsToSelector:@selector(countdownFinnishIn:)]) {
-            [self.delegate countdownFinnishIn:self];
+        if ([[NSDate date] timeIntervalSinceDate:self.expirationDate] >= 0)
+        {
+            [self cancelCountdown];
+            if ([self.delegate respondsToSelector:@selector(countdownFinishIn:)]) {
+                [self.delegate countdownFinishIn:self];
+            }
         }
     }
 }
 
 - (NSString *)currentTimeString
 {
+    NSDate *expirationDate = self.expirationDate ?: [NSDate dateWithTimeIntervalSinceNow:30.0];
     NSDateComponents *countdown = [[NSCalendar currentCalendar] components:(NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit)
                                                                   fromDate:[NSDate date]
-                                                                    toDate:self.expirationDate
+                                                                    toDate:expirationDate
                                                                    options:0];
     NSString *timeRemaining;
     

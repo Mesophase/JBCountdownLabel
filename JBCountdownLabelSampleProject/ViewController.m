@@ -47,7 +47,7 @@
 
 #pragma mark - Countdown delegate
 
-- (void)countdownFinnishIn:(JBCountdownLabel *)countdown
+- (void)countdownFinishIn:(JBCountdownLabel *)countdown
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Ignition started",)
                                                     message:NSLocalizedString(@"The countdown has ended",)

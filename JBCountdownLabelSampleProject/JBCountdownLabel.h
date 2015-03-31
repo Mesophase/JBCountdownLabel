@@ -39,7 +39,7 @@
  @param countdown The countdown that has ended.
  @since 0.0.1
  */
-- (void)countdownFinnishIn:(JBCountdownLabel *)countdown;
+- (void)countdownFinishIn:(JBCountdownLabel *)countdown;
 
 @end
 
@@ -48,7 +48,13 @@
  `JBCountdownLabel` is a subclass of `UILabel` that displays a countdown with a defined amount of seconds.
  */
 
+IB_DESIGNABLE
 @interface JBCountdownLabel : UILabel
+
+@property (nonatomic, weak) id<CountdownDelegate> delegate;
+
+@property (nonatomic, strong) IBInspectable NSString *stringFormat;
+@property (nonatomic, assign) IBInspectable int numSeconds;
 
 /**
  Initializes and returns a newly allocated UILabel object with a countdown configured with the specified number of seconds.
@@ -63,6 +69,12 @@
 ///----------------------------------
 /// @name Manage countdown
 ///----------------------------------
+
+/**
+ Restart the countdown setting the countdown to the initial amount of seconds.
+ @since 1.0.1
+ */
+- (void)startCountdown;
 
 /**
  Restart the countdown setting the countdown to the initial amount of seconds.
